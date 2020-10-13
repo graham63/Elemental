@@ -101,6 +101,7 @@ inline hydrogen::cpu_half_type operator^(hydrogen::cpu_half_type const&,
 #include <cuda_fp16.h>
 #elif defined(HYDROGEN_HAVE_ROCM)
 #include <hip/hip_fp16.h>
+#include <hydrogen/utils/HipGPUHalf.hpp>
 #endif // HYDROGEN_HAVE_CUDA
 
 namespace hydrogen
