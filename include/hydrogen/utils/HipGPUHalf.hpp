@@ -58,105 +58,97 @@ public:
 template <typename T>
 T& operator+=(T& lhs, HipGPUHalf const& rhs)
 {
-  lhs =  float(lhs) + float(rhs.val_);
-
-  return lhs;
+  return float(lhs) + float(rhs.val_);
 }
 
 // -=
 template <typename T>
 T& operator-=(T& lhs, HipGPUHalf const& rhs)
 {
-  lhs =  float(lhs) - float(rhs.val_);
-
-  return lhs;
+  return float(lhs) - float(rhs.val_);
 }
 
 // *=
 template <typename T>
 T& operator*=(T& lhs, HipGPUHalf const& rhs)
 {
-  lhs =  float(lhs) * float(rhs.val_);
-
-  return lhs;
+  return float(lhs) * float(rhs.val_);
 }
 
 // /=
 template <typename T>
 T& operator/=(T& lhs, HipGPUHalf const& rhs)
 {
-  lhs =  float(lhs) / float(rhs.val_);
-
-  return lhs;
+  return float(lhs) / float(rhs.val_);
 }
 
 /** @brief Enable addition functionality for __half on GPUs. */
-HipGPUHalf operator+(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
+HipGPUHalf& operator+(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
 {
   return float(lhs.val_) + float(rhs.val_);
 }
 template<typename T>
-HipGPUHalf operator+(T const& lhs, HipGPUHalf const& rhs)
+HipGPUHalf& operator+(T const& lhs, HipGPUHalf const& rhs)
 {
   return float(lhs) + float(rhs.val_);
 }
 template<typename T>
-HipGPUHalf operator+(HipGPUHalf const& lhs, T const& rhs)
+HipGPUHalf& operator+(HipGPUHalf const& lhs, T const& rhs)
 {
   return float(lhs.val_) + float(rhs);
 }
 
 /** @brief Enable subtraction functionality for __half on GPUs. */
-HipGPUHalf operator-(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
+HipGPUHalf& operator-(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
 {
   return float(lhs.val_) - float(rhs.val_);
 }
 template<typename T>
-HipGPUHalf operator-(T const& lhs, HipGPUHalf const& rhs)
+HipGPUHalf& operator-(T const& lhs, HipGPUHalf const& rhs)
 {
   return float(lhs) - float(rhs.val_);
 }
 template<typename T>
-HipGPUHalf operator-(HipGPUHalf const& lhs, T const& rhs)
+HipGPUHalf& operator-(HipGPUHalf const& lhs, T const& rhs)
 {
   return float(lhs.val_) - float(rhs);
 }
 
 /** @brief Enable multiplication functionality for __half on GPUs. */
-HipGPUHalf operator*(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
+HipGPUHalf& operator*(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
 {
   return float(lhs.val_) * float(rhs.val_);
 }
 template<typename T>
-HipGPUHalf operator*(T const& lhs, HipGPUHalf const& rhs)
+HipGPUHalf& operator*(T const& lhs, HipGPUHalf const& rhs)
 {
   return float(lhs) * float(rhs.val_);
 }
 template<typename T>
-HipGPUHalf operator*(HipGPUHalf const& lhs, T const& rhs)
+HipGPUHalf& operator*(HipGPUHalf const& lhs, T const& rhs)
 {
   return float(lhs.val_) * float(rhs);
 }
 
 /** @brief Enable division functionality for __half on GPUs. */
-HipGPUHalf operator/(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
+HipGPUHalf& operator/(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
 {
   return float(lhs.val_) / float(rhs.val_);
 }
 
 template<typename T>
-HipGPUHalf operator/(T const& lhs, HipGPUHalf const& rhs)
+HipGPUHalf& operator/(T const& lhs, HipGPUHalf const& rhs)
 {
   return float(lhs) / float(rhs.val_);
 }
 template<typename T>
-HipGPUHalf operator/(HipGPUHalf const& lhs, T const& rhs)
+HipGPUHalf& operator/(HipGPUHalf const& lhs, T const& rhs)
 {
   return float(lhs.val_) / float(rhs);
 }
 
 /** @brief Enable unary minus functionality for __half. */
-HipGPUHalf operator-(HipGPUHalf const& x)
+HipGPUHalf& operator-(HipGPUHalf const& x)
 {
   return -float(x.val_);
 }
@@ -182,7 +174,6 @@ std::ostream& operator<<(std::ostream& os, HipGPUHalf& const x)
 {
   return os << float(x.val_) << "_h";
 }
-
 
 }// namespace hydrogen
 #endif // HYDROGEN_SYNCINFOBASE_HPP_
