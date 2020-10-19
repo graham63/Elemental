@@ -112,7 +112,7 @@ static_assert(false, "__HIP_NO_HALF_CONVERSIONS__ is defined.");
 #endif
 
 /** @brief Unified name for the FP16 type on GPU */
-using gpu_half_type = __half;
+using gpu_half_type = HipGPUHalf;
 
 template <>
 struct TypeTraits<gpu_half_type>
@@ -124,7 +124,7 @@ struct TypeTraits<gpu_half_type>
 
 }// namespace hydrogen
 
-#if !(defined(__CUDACC__) || defined(__HIPCC__))
+#if defined HYDROGEN_HAVE_CUDA && !defined __CUDACC__
 
 /** @brief Enable "update" functionality for __half. */
 template <typename T>

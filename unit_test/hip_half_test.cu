@@ -1,191 +1,11 @@
 #include <catch2/catch.hpp>
 
-#include <hydrogen/meta/MetaUtilities.hpp>
-#include <hydrogen/device/GPU.hpp>
+#include <hydrogen/utils/HalfPrecision.hpp>
+#include <hydrogen/utils/HipGPUHalf.hpp>
 
 #include <hip/hip_fp16.h>
 
-namespace hydrogen
-{
-class HipGPUHalf
-{
-public:
-
-  /** @brief Enable addition assignment for __half on GPUs. */
-  inline HipGPUHalf& operator+=(HipGPUHalf const& rhs)
-  {
-    val_ = float(val_) + float(rhs.val_);
-    return *this;
-  }
-
-  /** @brief Enable subtraction assignment for __half on GPUs. */
-  inline HipGPUHalf& operator-=(HipGPUHalf const& rhs)
-  {
-    val_ = float(val_) - float(rhs.val_);
-    return *this;
-  }
-
-  /** @brief Enable multiplication assignment for __half on GPUs. */
-  inline HipGPUHalf& operator*=(HipGPUHalf const& rhs)
-  {
-    val_ = float(val_) * float(rhs.val_);
-    return *this;
-  }
-
-  /** @brief Enable division assignment for __half on GPUs. */
-  inline HipGPUHalf& operator/=(HipGPUHalf const& rhs)
-  {
-    val_ = float(val_) / float(rhs.val_);
-    return *this;
-  }
-  inline __half get_val() { return float(val_); }
-
-  __half val_;
-
-public:
-
-    template <typename T, EnableWhen<std::is_integral<T>, int> = 0>
-    HipGPUHalf(T val)
-        : val_{val}
-    {}
-    template <typename T, EnableWhen<std::is_floating_point<T>, int> = 0>
-    HipGPUHalf(T val)
-        : val_{val}
-    {}
-
-};// class HipGPUHalf
-
-
-/** @brief Enable addition functionality for __half on GPUs. */
-HipGPUHalf operator+(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
-{
-  return float(lhs.val_) + float(rhs.val_);
-}
-template<typename T>
-HipGPUHalf operator+(T const& lhs, HipGPUHalf const& rhs)
-{
-  return float(lhs) + float(rhs.val_);
-}
-template<typename T>
-HipGPUHalf operator+(HipGPUHalf const& lhs, T const& rhs)
-{
-  return float(lhs.val_) + float(rhs);
-}
-
-/** @brief Enable subtraction functionality for __half on GPUs. */
-HipGPUHalf operator-(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
-{
-  return float(lhs.val_) - float(rhs.val_);
-}
-template<typename T>
-HipGPUHalf operator-(T const& lhs, HipGPUHalf const& rhs)
-{
-  return float(lhs) - float(rhs.val_);
-}
-template<typename T>
-HipGPUHalf operator-(HipGPUHalf const& lhs, T const& rhs)
-{
-  return float(lhs.val_) - float(rhs);
-}
-
-/** @brief Enable multiplication functionality for __half on GPUs. */
-HipGPUHalf operator*(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
-{
-  return float(lhs.val_) * float(rhs.val_);
-}
-template<typename T>
-HipGPUHalf operator*(T const& lhs, HipGPUHalf const& rhs)
-{
-  return float(lhs) * float(rhs.val_);
-}
-template<typename T>
-HipGPUHalf operator*(HipGPUHalf const& lhs, T const& rhs)
-{
-  return float(lhs.val_) * float(rhs);
-}
-
-/** @brief Enable division functionality for __half on GPUs. */
-HipGPUHalf operator/(HipGPUHalf const& lhs, HipGPUHalf const& rhs)
-{
-  return float(lhs.val_) / float(rhs.val_);
-}
-
-template<typename T>
-HipGPUHalf operator/(T const& lhs, HipGPUHalf const& rhs)
-{
-  return float(lhs) / float(rhs.val_);
-}
-template<typename T>
-HipGPUHalf operator/(HipGPUHalf const& lhs, T const& rhs)
-{
-  return float(lhs.val_) / float(rhs);
-}
-
-// +=
-template <typename T>
-T& operator+=(T& lhs, HipGPUHalf const& rhs)
-{
-  lhs =  float(lhs) + float(rhs.val_);
-
-  return lhs;
-}
-
-// -=
-template <typename T>
-T& operator-=(T& lhs, HipGPUHalf const& rhs)
-{
-  lhs =  float(lhs) - float(rhs.val_);
-
-  return lhs;
-}
-
-// *=
-template <typename T>
-T& operator*=(T& lhs, HipGPUHalf const& rhs)
-{
-  lhs =  float(lhs) * float(rhs.val_);
-
-  return lhs;
-}
-
-// /=
-template <typename T>
-T& operator/=(T& lhs, HipGPUHalf const& rhs)
-{
-  lhs =  float(lhs) / float(rhs.val_);
-
-  return lhs;
-}
-
-// NEGATIVE
-HipGPUHalf operator-(HipGPUHalf const& x)
-{
-  return -float(x.val_);
-}
-
-// EQUALITY
-bool operator==(HipGPUHalf const& rhs, HipGPUHalf const& lhs)
-{
-  return float(rhs.val_) == float(lhs.val_);
-}
-template <typename T>
-bool operator==(T const& rhs, HipGPUHalf const& lhs)
-{
-  float(rhs) == float(lhs.val_);
-}
-template <typename T>
-bool operator==(HipGPUHalf const& rhs, T const& lhs)
-{
-  float(rhs.val_) == float(lhs);
-}
-
-std::ostream& operator<<(std::ostream& os, HipGPUHalf& x)
-{
-  return os << float(x.val_) << "_h";
-}
-
-
-}// namespace hydrogen
+#include <sstream>
 
 using gpu_half_type = hydrogen::HipGPUHalf;
 
@@ -206,7 +26,6 @@ static_assert(std::is_constructible<gpu_half_type, double>::value,
               "gpu_half_type should be constructible by a double.");
 
 // Runtime testing
-
 using namespace hydrogen;
 TEST_CASE("Testing HipGPUHalf operations", "[seq][gpu][half][hip]")
 {
@@ -493,14 +312,5 @@ TEST_CASE("Testing HipGPUHalf operations", "[seq][gpu][half][hip]")
     gpu_half_type neg_one_h(-1.f);
 
     CHECK( -(one_h) == neg_one_h );
-  }
-
-  SECTION("Testing operator << ")
-  {
-    gpu_half_type one_h(1.f);
-    std::stringstream test;
-
-    test << one_h;
-    CHECK( test.str() == "1_h" );
   }
 }
