@@ -119,6 +119,23 @@ struct IsSupportedType_Base<rocblas_half, BLAS_Op::GEMMSTRIDEDBATCHED>
     : std::true_type {};
 #endif // HYDROGEN_GPU_USE_FP16
 
+#ifdef HYDROGEN_GPU_USE_FP16
+template <>
+struct IsSupportedType_Base<gpu_half_type, BLAS_Op::AXPY> : std::true_type {};
+template <>
+struct IsSupportedType_Base<gpu_half_type, BLAS_Op::DOT> : std::true_type {};
+template <>
+struct IsSupportedType_Base<gpu_half_type, BLAS_Op::GEMM> : std::true_type {};
+template <>
+struct IsSupportedType_Base<gpu_half_type, BLAS_Op::GEMMSTRIDEDBATCHED>
+    : std::true_type
+{};
+template <>
+struct IsSupportedType_Base<gpu_half_type, BLAS_Op::NRM2> : std::true_type {};
+template <>
+struct IsSupportedType_Base<gpu_half_type, BLAS_Op::SCAL> : std::true_type {};
+#endif // HYDROGEN_GPU_USE_FP16
+
 /** @class IsSupportedType
  *  @brief Predicate indicating that the given type is compatible with
  *         rocBLAS.

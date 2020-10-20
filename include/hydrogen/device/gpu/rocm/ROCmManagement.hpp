@@ -51,6 +51,12 @@ struct GPUStaticStorageTypeT<thrust::complex<double>>
     using type = hipDoubleComplex;
 };
 
+template <>
+struct GPUStaticStorageTypeT<HipGPUHalf>
+{
+    using type = _Float16;
+};
+
 template <typename T>
 struct GPUStaticStorageTypeT<El::Complex<T>>
     : GPUStaticStorageTypeT<NativeGPUType<T>>
