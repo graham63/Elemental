@@ -54,7 +54,7 @@ struct GPUStaticStorageTypeT<thrust::complex<double>>
 template <>
 struct GPUStaticStorageTypeT<HipGPUHalf>
 {
-    using type = _Float16;
+    using type = __half;
 };
 
 template <typename T>
